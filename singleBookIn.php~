@@ -1,0 +1,20 @@
+<?php
+	include "checkLogin.php";
+	$bookNum = $_POST["bookNum"];
+	$category = $_POST["category"];
+	$bookName = $_POST["bookName"];
+	$publisher = $_POST["publisher"];
+	$year = $_POST["year"];
+	$author = $_POST["author"];
+	$price = $_POST["price"];
+	$amount = $_POST["amount"];
+	mysql_select_db("library", $con);
+	$q = "INSERT INTO book VALUES('$bookNum', '$category', '$publisher', $year, '$author', $price, $amount)";
+	if (!mysql_query($q, $con)){
+		die('入库失败 : ' . mysql_error());
+	}
+	else{
+		echo "入库成功, 3秒后自动跳转";
+		echo "<meta http-equiv='refresh' content='3;url=bookIn.php'>";
+	}
+?>

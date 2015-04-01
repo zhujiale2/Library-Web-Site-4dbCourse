@@ -1,0 +1,4 @@
+<?php
+	setcookie("adminID", "", 0);
+	header("location: index.html");
+?>

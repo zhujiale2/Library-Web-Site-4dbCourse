@@ -1,0 +1,28 @@
+<?php
+	include "checkLogin.php";
+	if ($_FILES["file"]["error"] > 0){
+		die("上传失败 : ".$_FILES["file"]["error"]);
+	}
+	else{
+		if ($_FILES["file"]["type"] != "text/plain"){
+			die("文件类型不是纯文件!");
+		} 
+		if ($_FILES["file"]["size"] > 20000){
+			die("文件大小超过限制!");
+		}
+		$fname = $_FILES["file"]["tmp_name"];
+		$file = fopen($fname, "r") or die("文件打开失败");
+		$lineNum = 0;
+		mysql_select_db("library", $con);
+		while (!feof($file)){
+			$lineNum++;
+			$command = "INSERT INTO book VALUES" . fgets($file);
+			if (!mysql_query($command, $con)){
+				die('第' . $lineNum . '行入库失败 : ' . mysql_error());
+			}
+		}
+		fclose($file);
+		echo "入库成功, 3秒后自动跳转";
+		echo "<meta http-equiv='refresh' content='3;url=bookIn.php'>";
+	}
+?>
